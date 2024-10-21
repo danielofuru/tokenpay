@@ -1,6 +1,6 @@
 [submodule "tor"]
 	path = tor
-	url = https://github.com/tokenpay/tor
+	url = https://github.com/torproject/tor/tree/7c1601fb6edd780ffef386936217ede9531c26e6
 	branch = master
 [submodule "leveldb"]
 	path = leveldb
