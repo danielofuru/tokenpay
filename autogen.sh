@@ -7,7 +7,7 @@ git submodule init
 git submodule sync --recursive
 git submodule update --recursive --force --remote
 
-autoreconf --no-recursive --install
+git submodule update --init --recursive
 
 pushd tor
 ./autogen.sh
