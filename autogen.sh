@@ -3,8 +3,11 @@
 [ -d .git ] && [ -d tor ] && [ -d leveldb ] && [ -d db4.8 ] || \
   { echo "Please run this command from the root of the TokenPay repository." && exit 1; }
 
-set -e
-git submodule --init --recursive
+git submodule init
+git submodule sync --recursive
+git submodule update --recursive --force --remote
+
+autoreconf --no-recursive --install
 
 
 pushd tor
