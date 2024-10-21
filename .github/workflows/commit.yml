@@ -1,0 +1,111 @@
+on:
+  push
+jobs:
+  macos12:
+    runs-on: macos-12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: git config credential.helper
+        run: git config credential.helper
+        
+      - name: which clang/xcode
+        run: clang --version
+
+      - name: Brew install base dependencies
+        run: brew install --quiet automake berkeley-db@4 boost@1.76 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb 
+
+      - name: Brew link dependencies
+        run: brew link boost@1.76 qt@5 berkeley-db@4
+
+      - name: Auto generate
+        run: ./autogen.sh
+
+      - name: configure
+        run: ./configure --enable-scrypt-sse2 --disable-bench --disable-tests --disable-dependency-tracking --disable-werror --with-gui --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
+
+      - name: make
+        run: make -j4
+
+      - name: make .dmg
+        run: make deploy
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tpay-macos12
+          path: |
+            *.dmg
+  
+  macos13:
+    runs-on: macos-13
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: git config credential.helper
+        run: git config credential.helper
+
+      - name: Brew install base dependencies
+        run: |
+          # A workaround for "The `brew link` step did not complete successfully" error.
+          brew install --quiet python@3 || brew link --overwrite python@3
+          brew install --quiet automake berkeley-db@4 boost@1.76 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb
+
+      - name: Brew link dependencies
+        run: brew link boost@1.76 qt@5 berkeley-db@4 
+        
+      - name: which clang/xcode
+        run: clang --version
+
+      - name: Auto generate
+        run: ./autogen.sh
+
+      - name: configure
+        run: ./configure --enable-scrypt-sse2 --disable-bench --disable-tests --disable-dependency-tracking --disable-werror --with-gui --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
+
+      - name: make
+        run: make -j4
+
+      - name: make .dmg
+        run: make deploy
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tpay-macos13
+          path: |
+            *.dmg
+
+  ubuntu18:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update apt repos
+        run: sudo apt-get update
+
+      - name: Install base dependencies
+        run: sudo apt-get install build-essential xutils-dev libtool gperf autotools-dev automake pkg-config bsdmainutils libattr1-dev make automake bison byacc cmake curl g++-multilib binutils-gold bison byacc python3
+
+      - name: Build depends
+        run: cd depends/ && make -j4 HOST=x86_64-linux-gnu
+
+      - name: Auto generate
+        run: ./autogen.sh
+
+      - name: configure
+        run: CONFIG_SITE=$PWD/depends/x86_64-linux-gnu/share/config.site ./configure --enable-scrypt-sse2 --disable-bench --disable-tests --disable-dependency-tracking --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
+
+      - name: make
+        run: make -j4
+        
+      - name: strip
+        run: cd ./src && strip tokenpayd tokenpay
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tpay-ubuntu18
+          path: |
+            ./src/tokenpayd
+            ./src/tokenpay
