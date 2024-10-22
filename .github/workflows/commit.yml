@@ -14,10 +14,10 @@ jobs:
         run: |
           # A workaround for "The `brew link` step did not complete successfully" error.
           brew install --quiet python@3 || brew link --overwrite python@3
-          brew install --quiet automake berkeley-db@4 boost@1.76 openssl@1.1 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb
+          brew install --quiet automake berkeley-db@4 boost@1.76 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb && brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       - name: Brew link dependencies
-        run: brew link boost@1.76 qt@5 berkeley-db@4 openssl@1.1
+        run: brew link boost@1.76 qt@5 berkeley-db@4
         
       - name: which clang/xcode
         run: clang --version
@@ -63,8 +63,8 @@ jobs:
       - name: install db 4.8
         run: wget https://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz && tar xzvf db-4.8.30.NC.tar.gz
         
-      - name: make berkeley db 4.8 from scratch
-        run: cd db-4.8.30.NC/build_unix && ../dist/configure --disable-shared --enable-cxx --disable-replication --with-pic && make
+      - name: patch and make berkeley db 4.8 from scratch
+        run: cd db-4.8.30.NC && sed -i 's/__atomic_compare_exchange/__atomic_compare_exchange_db/g' ~/db-4.8.30.NC/dbinc/atomic.h && cd build_unix && ../dist/configure --disable-shared --enable-cxx --disable-replication --with-pic && make
         
       - name: Install base dependencies
         run: sudo apt-get install build-essential libtool autotools-dev automake pkg-config zlib1g-dev libevent-dev bsdmainutils git libseccomp-dev libcap-dev libminiupnpc-dev libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev
