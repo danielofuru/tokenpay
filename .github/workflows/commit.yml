@@ -86,7 +86,7 @@ jobs:
         run: sudo apt-get update
 
       - name: install boost
-        run: wget https://archives.boost.io/release/1.65.0/source/boost_1_65_0.tar.gz && 
+        run: wget https://archives.boost.io/release/1.65.0/source/boost_1_65_0.tar.gz
         
       - name: untar boost
         run: tar xzvf boost_1_65_0.tar.gz
