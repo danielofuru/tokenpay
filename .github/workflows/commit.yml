@@ -109,11 +109,10 @@ jobs:
         run: make -j4
         
       - name: strip
-        run: cd ./src && strip tokenpayd tokenpay
+        run: cd /home/runner/work/tokenpay/tokenpay/src && strip tokenpayd
 
       - uses: actions/upload-artifact@v4
         with:
           name: tpay-ubuntu20
           path: |
             ./src/tokenpayd
-            ./src/tokenpay
