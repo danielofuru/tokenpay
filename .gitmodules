@@ -7,5 +7,5 @@
 	url = https://github.com/tokenpay/db4.8
 [submodule "tor"]
 	path = tor
-	url = https://github.com/torproject/tor
+	url = https://github.com/tokenpay/tor
 	branch = tor-0.4.7.13
