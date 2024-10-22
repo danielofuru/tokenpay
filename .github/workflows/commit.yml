@@ -70,7 +70,7 @@ jobs:
         run: ./autogen.sh
 
       - name: configure
-        run: ./configure --enable-gui --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include"
+        run: export BDB_PREFIX='/home/runner/work/tokenpay/tokenpay/contrib/db4' && ./configure --enable-gui --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include"
 
       - name: make
         run: make -j4
