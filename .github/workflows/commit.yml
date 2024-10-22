@@ -23,7 +23,7 @@ jobs:
         run: ./autogen.sh
 
       - name: configure
-        run: ./configure --OS_MACOS --disable-dependency-tracking --disable-werror --with-gui --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
+        run: ./configure --disable-dependency-tracking --disable-werror --with-gui --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
 
       - name: make
         run: make -j4
@@ -62,7 +62,7 @@ jobs:
         run: ./autogen.sh
 
       - name: configure
-        run: ./configure --OS_MACOS --disable-dependency-tracking --disable-werror --with-gui --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
+        run: ./configure --disable-dependency-tracking --disable-werror --with-gui --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
 
       - name: make
         run: make -j4
@@ -92,7 +92,7 @@ jobs:
         run: ./autogen.sh
 
       - name: configure
-        run: ./configure --OS_LINUX --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
+        run: ./configure --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
 
       - name: make
         run: make -j4
