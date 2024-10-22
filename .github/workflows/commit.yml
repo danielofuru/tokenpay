@@ -92,7 +92,10 @@ jobs:
         run: tar xzvf boost_1_65_0.tar.gz
         
       - name: go in and run bootstrap
-        run: cd boost_1_65_0 && ./bootstrap.sh --prefix=/usr/ && ./b2 && sudo ./b2 install
+        run: cd boost_1_65_0 && ./bootstrap.sh --prefix=/usr/ 
+
+      - name: run b2 
+        run: ./b2 install
         
       - name: Install base dependencies
         run: sudo apt-get install build-essential libtool autotools-dev automake pkg-config zlib1g-dev libevent-dev bsdmainutils git libseccomp-dev libcap-dev libminiupnpc-dev libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev
