@@ -20,16 +20,7 @@ jobs:
           brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb && brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       - name: install boost
-        run: wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.gz
-        
-      - name: untar boost
-        run: tar xzvf boost_1_62_0.tar.gz
-        
-      - name: go in and run bootstrap
-        run: cd boost_1_62_0 && ./bootstrap.sh --with-libraries=chrono,date_time,iostreams,filesystem,program_options,system,thread,test
-
-      - name: run b2 
-        run: cd boost_1_62_0 && ./b2 && ./b2 install
+        run: curl -L https://raw.githubusercontent.com/JokerSun/homebrew-my/refs/heads/master/Formula/boost%401.59.rb > boost@1.59.rb && brew install boost@1.59.rb
         
       - name: Brew link dependencies
         run: brew link qt@5 berkeley-db@4
