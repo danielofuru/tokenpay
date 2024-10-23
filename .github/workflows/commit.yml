@@ -67,7 +67,7 @@ jobs:
         run: wget https://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz && tar xzvf db-4.8.30.NC.tar.gz
         
       - name: patch and make berkeley db 4.8 from scratch
-        run: cd db-4.8.30.NC/build_unix && sed -i 's/__atomic_compare_exchange/__atomic_compare_exchange_db/g' ../dbinc/atomic.h && ../dist/configure --disable-shared --enable-cxx --disable-replication --with-pic && make && sudo make install
+        run: cd db-4.8.30.NC/build_unix && sed -i 's/__atomic_compare_exchange/__atomic_compare_exchange_db/g' ../dbinc/atomic.h && ../dist/configure --disable-shared --enable-cxx --disable-replication --with-pic && make && sudo make install && sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so && sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.so /usr/lib/libdb_cxx-4.8.so
         
       - name: Install base dependencies
         run: sudo apt-get install build-essential libtool autotools-dev automake pkg-config zlib1g-dev libevent-dev bsdmainutils git libseccomp-dev libcap-dev libminiupnpc-dev libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev
@@ -76,7 +76,7 @@ jobs:
         run: ./autogen.sh
 
       - name: configure
-        run: ./configure --enable-gui --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib
+        run: ./configure --enable-gui --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -O2" LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib"
 
       - name: make
         run: make -j4
