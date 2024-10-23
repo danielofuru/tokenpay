@@ -79,17 +79,16 @@ jobs:
         run: ./autogen.sh
 
       - name: configure
-        run: ./configure --enable-gui --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -O2" LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib"
+        run: ./configure --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -O2" LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib"
 
       - name: make
         run: make -j4
         
       - name: strip
-        run: cd /home/runner/work/tokenpay/tokenpay/src && strip tokenpayd && strip tokenpay
+        run: cd /home/runner/work/tokenpay/tokenpay/src && strip tokenpayd
 
       - uses: actions/upload-artifact@v4
         with:
           name: tpay-ubuntu20
           path: |
             ./src/tokenpayd
-            ./src/tokenpay
