@@ -3,3 +3,6 @@
 	url = https://github.com/tokenpay/leveldb
 	branch = master
 	
+[submodule "tor"]
+	path = tor
+	url = https://gitlab.torproject.org/tpo/core/tor
