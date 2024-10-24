@@ -2,3 +2,6 @@
 	path = tor
 	url = https://github.com/torproject/tor
 
+[submodule "leveldb"]
+	path = leveldb
+	url = https://github.com/google/leveldb/
