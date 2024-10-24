@@ -3,7 +3,7 @@ export LC_ALL=C
 
 set -e
 
-[ -d .git ] && [ -d tor ] && [ -d leveldb ] || \
+[ -d .git ] && [ -d tor ] || \
   { echo "Please run this command from the root of the TokenPay repository." && exit 1; }
 
 git submodule update --init --recursive
