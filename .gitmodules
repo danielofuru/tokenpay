@@ -1,3 +1,6 @@
 [submodule "tor"]
 	path = tor
 	url = https://github.com/torproject/tor
+[submodule "leveldb"]
+	path = leveldb
+	url = https://github.com/t3sting3/leveldb

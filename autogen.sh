@@ -22,5 +22,3 @@ pushd tor
 ./autogen.sh
 popd
 
-echo "Configure leveldb"
-(cd "${srcdir}/leveldb" && ./autogen.sh)
