@@ -15,6 +15,12 @@ if [ -z "${LIBTOOLIZE}" ] && GLIBTOOLIZE="$(command -v glibtoolize)"; then
   export LIBTOOLIZE
 fi
 
-cd tor && ./autogen.sh
+command -v autoreconf >/dev/null || \
+  (echo "configuration failed, please install autoconf first" && exit 1)
+autoreconf --install --force --warnings=all
+
+pushd tor
+./autogen.sh
+popd
 
 
