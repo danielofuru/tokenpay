@@ -19,8 +19,8 @@ jobs:
           brew install --quiet python@3 || brew link --overwrite python@3
           brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb && brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
-      - name: download and untar boost
-        run: wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz && tar -xzvf boost_1_59_0.tar.gz
+      - name: download and untar boost and apply patch
+        run: wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz && tar -xzvf boost_1_59_0.tar.gz && cd boost_1_59_0 && patch -p1 https://raw.githubusercontent.com/Homebrew/patches/2ccb6715b3/boost/boost159-missing-symbols.patch
         
       - name: install boost
         run: cd boost_1_59_0 && ./bootstrap.sh --with-toolset=clang
