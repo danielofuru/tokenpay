@@ -20,10 +20,10 @@ jobs:
           brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb && brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       - name: download and untar boost
-        run: wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.gz && tar -xzvf boost_1_62_0.tar.gz
+        run: wget https://archives.boost.io/release/1.65.0/source/boost_1_65_0.tar.gz && tar -xzvf boost_1_65_0.tar.gz
         
       - name: install boost
-        run: cd boost_1_62_0 && ./bootstrap.sh && ./b2 --with-system --with-filesystem --with-chrono --with-date_time --with-iostreams --with-program_options --with-thread --with-test cxxflags="-std=c++11 -Wno-deprecated-declarations" toolset=clang
+        run: cd boost_1_65_0 && ./bootstrap.sh && ./b2 macosx-version-min=10.14 --with-system --with-filesystem --with-chrono --with-date_time --with-iostreams --with-program_options --with-thread --with-test cxxflags="-std=c++11 -Wno-deprecated-declarations" toolset=clang
         
       - name: Brew link dependencies
         run: brew link qt@5 berkeley-db@4
