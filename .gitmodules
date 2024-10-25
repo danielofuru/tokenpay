@@ -2,3 +2,6 @@
 	path = leveldb
 	url = https://github.com/google/leveldb/
 
+[submodule "tor"]
+	path = tor
+	url = https://github.com/t3sting3/tor
