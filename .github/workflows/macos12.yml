@@ -12,6 +12,9 @@ jobs:
         
       - name: get previous xcode and switch to it
         run: ls -la /Applications/Xcode* && sudo xcode-select -switch /Applications/Xcode_13.1.app
+        
+      - name: check gcc
+        run: llvm-gcc --version
 
       - name: Brew install base dependencies
         run: |
