@@ -20,7 +20,7 @@ jobs:
           brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb && brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       - name: download and untar boost
-        run: wget https://github.com/t3sting3/boost169/archive/refs/tags/1.tar.gz && tar -xzvf 1.tar.gz
+        run: wget https://github.com/t3sting3/boost169/archive/refs/tags/1.tar.gz && tar -xzvf 1.tar.gz && ls
         
       - name: install boost
         run: cd 1 && ./bootstrap.sh --with-toolset=darwin
