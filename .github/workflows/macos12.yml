@@ -23,7 +23,7 @@ jobs:
           brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb && brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       - name: download and untar boost and apply patch
-        run: wget http://sourceforge.net/projects/boost/files/boost/1.67.0/boost_1_67_0.tar.gz && tar -xzvf boost_1_67_0.tar.gz && cd boost_1_67_0
+        run: wget http://sourceforge.net/projects/boost/files/boost/1.67.0/boost_1_67_0.tar.gz && tar -xzvf boost_1_67_0.tar.gz && cd boost_1_67_0 && cd tools/build/src/tools && rm -rf darwin.jam && wget https://raw.githubusercontent.com/t3sting3/boost167/refs/heads/main/darwin.jam
         
       - name: install boost
         run: cd boost_1_67_0 && ./bootstrap.sh --with-toolset=darwin
