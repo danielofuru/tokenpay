@@ -26,10 +26,10 @@ jobs:
         run: cd boost_1_69_0 && patch -p1 https://raw.githubusercontent.com/macports/macports-ports/264ca2dd2f66c1de41e4279dbee8a963a43dae7e/devel/boost169/files/patch-version_check.diff && patch
         
       - name: install boost
-        run: cd boost_1_69_0 && ./bootstrap.sh --with-toolset=darwin
+        run: cd boost_1_69_0 && ./bootstrap.sh --with-toolset=clang-darwin
 
       - name: b2
-        run: cd boost_1_69_0 && ./b2 --with-system --with-filesystem --with-chrono --with-date_time --with-iostreams --with-program_options --with-thread --with-test cxxflags="-std=c++11 -Wno-deprecated-declarations" toolset=darwin
+        run: cd boost_1_69_0 && ./b2 --with-system --with-filesystem --with-chrono --with-date_time --with-iostreams --with-program_options --with-thread --with-test cxxflags="-std=c++11 -Wno-deprecated-declarations" toolset=clang-darwin
         
       - name: Brew link dependencies
         run: brew link qt@5 berkeley-db@4
