@@ -20,16 +20,13 @@ jobs:
           brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb && brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       - name: download and untar boost
-        run: wget http://sourceforge.net/projects/boost/files/boost/1.69.0/boost_1_69_0.tar.gz && tar -xzvf boost_1_69_0.tar.gz
-
-      - name: go into boost and patch        
-        run: cd boost_1_69_0 && patch -p1 https://raw.githubusercontent.com/macports/macports-ports/264ca2dd2f66c1de41e4279dbee8a963a43dae7e/devel/boost169/files/patch-version_check.diff && patch
+        run: wget https://github.com/t3sting3/boost169/archive/refs/tags/1.tar.gz && tar -xzvf 1.tar.gz
         
       - name: install boost
-        run: cd boost_1_69_0 && ./bootstrap.sh --with-toolset=darwin
+        run: cd 1 && ./bootstrap.sh --with-toolset=darwin
 
       - name: b2
-        run: cd boost_1_69_0 && ./b2 --with-system --with-filesystem --with-chrono --with-date_time --with-iostreams --with-program_options --with-thread --with-test cxxflags="-std=c++11 -Wno-deprecated-declarations" toolset=darwin
+        run: cd 1 && ./b2 --with-system --with-filesystem --with-chrono --with-date_time --with-iostreams --with-program_options --with-thread --with-test cxxflags="-std=c++11 -Wno-deprecated-declarations" toolset=darwin
         
       - name: Brew link dependencies
         run: brew link qt@5 berkeley-db@4
