@@ -20,13 +20,13 @@ jobs:
           brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg && curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb && brew install protobuf261.rb && brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       - name: download and untar boost and apply patch
-        run: wget http://sourceforge.net/projects/boost/files/boost/1.66.0/boost_1_66_0.tar.gz && tar -xzvf boost_1_66_0.tar.gz && cd boost_1_66_0 && patch -p1 https://raw.githubusercontent.com/analogdevicesinc/scopy/e7f09b42cc86611c31142a66dbb65da5a4e7415c/CI/appveyor/patches/boost-darwin.patch
+        run: wget http://sourceforge.net/projects/boost/files/boost/1.69.0/boost_1_69_0.tar.gz && tar -xzvf boost_1_69_0.tar.gz && cd boost_1_69_0 && patch -p1 https://raw.githubusercontent.com/macports/macports-ports/264ca2dd2f66c1de41e4279dbee8a963a43dae7e/devel/boost169/files/patch-version_check.diff && patch
         
       - name: install boost
-        run: cd boost_1_66_0 && ./bootstrap.sh --with-toolset=darwin
+        run: cd boost_1_69_0 && ./bootstrap.sh --with-toolset=darwin
 
       - name: b2
-        run: cd boost_1_66_0 && ./b2 --with-system --with-filesystem --with-chrono --with-date_time --with-iostreams --with-program_options --with-thread --with-test cxxflags="-std=c++11 -Wno-deprecated-declarations" toolset=darwin
+        run: cd boost_1_69_0 && ./b2 --with-system --with-filesystem --with-chrono --with-date_time --with-iostreams --with-program_options --with-thread --with-test cxxflags="-std=c++11 -Wno-deprecated-declarations" toolset=darwin
         
       - name: Brew link dependencies
         run: brew link qt@5 berkeley-db@4
