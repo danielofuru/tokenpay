@@ -125,6 +125,30 @@ tokenpayd_LDADD = ../leveldb/out-static/libmemenv.a \
 		     $(BOOST_PROGRAM_OPTIONS_LIBS) \
 		     $(BOOST_THREAD_LIBS)
 
+# Internal crypto libraries used in Tor
+LIBED25519_REF10 = tor/src/ext/ed25519/ref10/libed25519_ref10.a
+LIBED25519_DONNA = tor/src/ext/ed25519/donna/libed25519_donna.a
+LIBKECCAK_TINY = tor/src/ext/keccak-tiny/libkeccak-tiny.a
+
+LIBDONNA = tor/src/lib/libcurve25519_donna.a \
+  $(LIBED25519_REF10) \
+  $(LIBED25519_DONNA)
+TOR_CRYPTO_LIBS = \
+	tor/src/lib/libtor-tls.a \
+	tor/src/lib/libtor-crypt-ops.a \
+	$(LIBKECCAK_TINY) \
+	$(LIBDONNA)
+
+# All static libraries used to link tor.
+TOR_LIBS = \
+	tor/src/core/libtor-app.a \
+	tor/src/lib/libtor-compress.a \
+	tor/src/lib/libtor-evloop.a \
+	$(TOR_CRYPTO_LIBS) \
+	$(TOR_UTIL_LIBS) \
+	tor/src/trunnel/libor-trunnel.a \
+	tor/src/lib/libtor-trace.a
+
 tokenpayd_CPPFLAGS = $(AM_CPPFLAGS) $(OPENSSL_CFLAGS) $(LIBEVENT_CFLAGS) \
 			$(LIBSECCOMP_CFLAGS) $(LIBCAP_CFLAGS) $(ZLIB_CFLAGS) $(ZSTD_CPPFLAGS) $(LZMA_CPPFLAGS) \
 			$(BOOST_CPPFLAGS) \
