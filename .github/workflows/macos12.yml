@@ -31,7 +31,8 @@ jobs:
           brew install --quiet python@3 || brew link --overwrite python@3
           brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg
           curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb
-          brew install protobuf261.rb
+          brew install protobuf@2.6.1
+          # Install Protobuf version 2.6.1 directly
           brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       # Download and prepare Boost library with a patch
