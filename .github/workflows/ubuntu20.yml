@@ -50,11 +50,10 @@ jobs:
             CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -O2" \
             LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib"
 
-      - name: Build
+      - name: Build with Verbose Logging
         run: |
           make CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -I/usr/local/include" \
-               LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib -L/usr/local/lib" > build.log 2>&1
-          tail -n 50 build.log
+               LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib -L/usr/local/lib" V=1 > build.log 2>&1
 
       - uses: actions/upload-artifact@v4
         with:
