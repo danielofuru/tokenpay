@@ -25,15 +25,38 @@ jobs:
       - name: Check GCC version
         run: llvm-gcc --version
 
-      # Install base dependencies with Homebrew
-      - name: Install dependencies via Homebrew
+      - name: Install Python 3
         run: |
+          echo "Installing Python 3..."
           brew install --quiet python@3 || brew link --overwrite python@3
-          brew install --quiet automake berkeley-db@4 miniupnpc qt@5 gperf qrencode librsvg
-          curl -L https://raw.githubusercontent.com/vergecurrency/protobuf261/master/protobuf261.rb > protobuf261.rb
+
+      - name: Install additional dependencies
+        run: |
+          echo "Installing automake..."
+          brew install --quiet automake
+          echo "Installing Berkeley DB..."
+          brew install --quiet berkeley-db@4
+          echo "Installing miniupnpc..."
+          brew install --quiet miniupnpc
+          echo "Installing qt@5..."
+          brew install --quiet qt@5
+          echo "Installing gperf..."
+          brew install --quiet gperf
+          echo "Installing qrencode..."
+          brew install --quiet qrencode
+          echo "Installing librsvg..."
+          brew install --quiet librsvg
+
+      - name: Handle OpenSSL version conflict
+        run: |
+          echo "Unlinking openssl@3 and linking openssl@1.1..."
+          brew unlink openssl@3 || true  # Ignore error if openssl@3 isn't installed
+          brew link --overwrite openssl@1.1
+
+      - name: Install Protobuf 2.6.1
+        run: |
+          echo "Installing protobuf@2.6.1..."
           brew install protobuf@2.6.1
-          # Install Protobuf version 2.6.1 directly
-          brew unlink openssl@3 && brew link --overwrite openssl@1.1
 
       # Download and prepare Boost library with a patch
       - name: Download and setup Boost
