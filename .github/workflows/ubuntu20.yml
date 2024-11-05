@@ -37,7 +37,7 @@ jobs:
         run: ./configure --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -O2" LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib"
 
       - name: make
-        run: make
+        run: make -j4
         
       - name: strip
         run: cd /home/runner/work/tokenpay/tokenpay/src && strip tokenpayd
