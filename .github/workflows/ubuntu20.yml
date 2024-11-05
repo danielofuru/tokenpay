@@ -1,5 +1,6 @@
 on:
   push
+
 jobs:
   ubuntu20:
     runs-on: ubuntu-20.04
@@ -7,43 +8,54 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update apt repos
-        run: sudo apt-get update
+      - name: Update apt repos and install base dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential libtool autotools-dev automake pkg-config zlib1g-dev \
+            libevent-dev bsdmainutils git libseccomp-dev libcap-dev \
+            libminiupnpc-dev libqt5gui5 libqt5core5a libqt5webkit5-dev \
+            libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev \
+            protobuf-compiler libqrencode-dev
 
-      - name: install boost
-        run: wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.gz
-      - name: untar boost
-        run: tar xzvf boost_1_62_0.tar.gz
-        
-      - name: go in and run bootstrap
-        run: cd boost_1_62_0 && ./bootstrap.sh --prefix=/usr/local --with-libraries=chrono,date_time,iostreams,filesystem,program_options,system,thread,test
+      - name: Install Boost 1.62.0
+        run: |
+          wget -q https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.gz -O boost_1_62_0.tar.gz
+          tar xzvf boost_1_62_0.tar.gz
+          cd boost_1_62_0
+          ./bootstrap.sh --prefix=/usr/local --with-libraries=chrono,date_time,iostreams,filesystem,program_options,system,thread,test
+          sudo ./b2 install
 
-      - name: run b2 
-        run: cd boost_1_62_0 && sudo ./b2 install
-        
-      - name: install db 4.8
-        run: wget https://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz && tar xzvf db-4.8.30.NC.tar.gz
-        
-      - name: patch and make berkeley db 4.8 from scratch
-        run: cd db-4.8.30.NC/build_unix && sed -i 's/__atomic_compare_exchange/__atomic_compare_exchange_db/g' ../dbinc/atomic.h && ../dist/configure --disable-shared --enable-cxx --disable-replication --with-pic && make && sudo make install && sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so && sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.so /usr/lib/libdb_cxx-4.8.so
-        
-      - name: Install base dependencies
-        run: sudo apt-get install build-essential libtool autotools-dev automake pkg-config zlib1g-dev libevent-dev bsdmainutils git libseccomp-dev libcap-dev libminiupnpc-dev libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev
+      - name: Install Berkeley DB 4.8
+        run: |
+          wget -q https://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz -O db-4.8.30.NC.tar.gz
+          tar xzvf db-4.8.30.NC.tar.gz
+          cd db-4.8.30.NC/build_unix
+          sed -i 's/__atomic_compare_exchange/__atomic_compare_exchange_db/g' ../dbinc/atomic.h
+          ../dist/configure --disable-shared --enable-cxx --disable-replication --with-pic
+          make
+          sudo make install
+          sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so
+          sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.so /usr/lib/libdb_cxx-4.8.so
 
       - name: Auto generate
         run: ./autogen.sh
 
-      - name: configure
-        run: ./configure --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -O2" LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib"
+      - name: Configure
+        run: ./configure --disable-werror --prefix=`pwd`/depends/x86_64-linux-gnu \
+          --bindir=`pwd`/release/bin --libdir=`pwd`/release/lib \
+          CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -O2" \
+          LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib"
 
-      - name: make
-        run: make -j4
-        
-      - name: strip
-        run: cd /home/runner/work/tokenpay/tokenpay/src && strip tokenpayd
+      - name: Build
+        run: make -j4 V=1
 
-      - uses: actions/upload-artifact@v4
+      - name: Strip binaries
+        run: strip ./src/tokenpayd
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: tpay-ubuntu20
           path: |
-            ./src/tokenpayd
+            src/tokenpayd
