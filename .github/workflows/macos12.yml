@@ -98,7 +98,7 @@ jobs:
 
       # Compile the code
       - name: Compile the project
-        run: make -j4
+        run: make 
 
       # Package the app into a .dmg file
       - name: Create .dmg package
