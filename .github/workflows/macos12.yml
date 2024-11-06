@@ -53,10 +53,10 @@ jobs:
           brew unlink openssl@3 || true  # Ignore error if openssl@3 isn't installed
           brew link --overwrite openssl@1.1
 
-      - name: Install Protobuf@2.6.1
+      - name: Install Protobuf@21
         run: |
-          echo "Installing protobuf@2.6.1..."
-          brew install protobuf@2.6.1
+          echo "Installing protobuf@21..."
+          brew install protobuf@21
 
       # Download and prepare Boost library with a patch
       - name: Download and setup Boost
