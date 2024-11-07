@@ -37,8 +37,8 @@ jobs:
           sudo make install
 
           # Link libraries
-          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.a /usr/lib/libdb-4.8.a
-          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.a /usr/lib/libdb_cxx-4.8.a
+          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so
+          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.so /usr/lib/libdb_cxx-4.8.so
 
 
       - name: Auto generate
@@ -56,7 +56,8 @@ jobs:
       - name: Build with Verbose Logging
         run: |
           make CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -I/usr/local/include" \
-               LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib -L/usr/local/lib" V=1 > build.log 2>&1
+          LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib -L/usr/local/lib" V=1
+
 
       - uses: actions/upload-artifact@v4
         with:
