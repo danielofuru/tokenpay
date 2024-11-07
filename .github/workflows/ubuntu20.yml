@@ -27,7 +27,7 @@ jobs:
           sudo ./b2 install
       - name: Install Berkeley DB 4.8
         run: |
-          wget -q https://fossies.org/linux/misc/db-4.8.30.NC.tar.gz -O db-4.8.30.NC.tar.gz
+          wget https://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz -O db-4.8.30.NC.tar.gz
           tar xzvf db-4.8.30.NC.tar.gz
           cd db-4.8.30.NC/build_unix
           sed -i 's/__atomic_compare_exchange/__atomic_compare_exchange_db/g' ../dbinc/atomic.h
