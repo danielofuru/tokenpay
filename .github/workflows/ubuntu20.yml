@@ -25,18 +25,21 @@ jobs:
           cd boost_1_62_0
           ./bootstrap.sh --prefix=/usr/local --with-libraries=chrono,date_time,iostreams,filesystem,program_options,system,thread,test
           sudo ./b2 install
-
       - name: Install Berkeley DB 4.8
         run: |
-          wget -q https://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz -O db-4.8.30.NC.tar.gz
+          wget -q https://fossies.org/linux/misc/db-4.8.30.NC.tar.gz -O db-4.8.30.NC.tar.gz
           tar xzvf db-4.8.30.NC.tar.gz
           cd db-4.8.30.NC/build_unix
           sed -i 's/__atomic_compare_exchange/__atomic_compare_exchange_db/g' ../dbinc/atomic.h
-          ../dist/configure --disable-shared --enable-cxx --disable-replication --with-pic
-          make
+          ../dist/configure --disable-shared --enable-cxx --disable-replication --with-pic \
+            CPPFLAGS="-fPIC" CXXFLAGS="-fPIC"
+          make V=1
           sudo make install
-          sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so
-          sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.so /usr/lib/libdb_cxx-4.8.so
+
+          # Link libraries
+          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so
+          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.so /usr/lib/libdb_cxx-4.8.so
+
 
       - name: Auto generate
         run: ./autogen.sh
