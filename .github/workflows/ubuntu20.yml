@@ -58,6 +58,11 @@ jobs:
           make CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -I/usr/local/include" \
           LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib -L/usr/local/lib" V=1
 
+      - name: Display build log on failure
+        if: failure()
+        run: cat build.log
+
+
 
       - uses: actions/upload-artifact@v4
         with:
