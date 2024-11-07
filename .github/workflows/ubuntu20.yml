@@ -37,8 +37,8 @@ jobs:
           sudo make install
 
           # Link libraries
-          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so
-          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.so /usr/lib/libdb_cxx-4.8.so
+          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.a /usr/lib/libdb-4.8.a
+          sudo ln -sf /usr/local/BerkeleyDB.4.8/lib/libdb_cxx-4.8.a /usr/lib/libdb_cxx-4.8.a
 
 
       - name: Auto generate
